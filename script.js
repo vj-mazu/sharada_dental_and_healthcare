@@ -241,48 +241,47 @@ document.addEventListener('DOMContentLoaded', () => {
             formStatus.textContent = '';
             
             const formData = new FormData(form);
-            
-            try {
-                // Pointing to the relative path so it works across localhost, mobile, and different IPs
-                const response = await fetch('/api/book', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    formStatus.textContent = "✅ Appointment booked! Redirecting to WhatsApp for confirmation...";
-                    formStatus.classList.add('success');
-                    
-                    // Construct WhatsApp message
-                    const pName = formData.get('patient_name');
-                    const pDate = formData.get('preferred_date');
-                    const pService = formData.get('service') || 'General';
-                    const pSymptom = formData.get('symptom') || 'Regular Checkup';
-                    
-                    const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📅 *Date/Time*: ${pDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
-                    const waUrl = `https://wa.me/919886891212?text=${waMsg}`;
-                    
-                    form.reset();
-                    
-                    // Open WhatsApp after 1.5s delay for feedback
-                    setTimeout(() => {
-                        window.open(waUrl, '_blank');
-                        closeApptModal();
-                    }, 1500);
-                } else {
-                    formStatus.textContent = "❌ Error: " + (result.message || 'Failed to book');
-                    formStatus.classList.add('error');
-                }
-            } catch (error) {
-                console.error("Booking Error:", error);
-                formStatus.textContent = "❌ Cannot connect to server. Is the FastAPI backend running?";
+            const pName = formData.get('patient_name');
+            const pPhone = formData.get('phone_number');
+            const pDate = formData.get('preferred_date');
+            const pService = formData.get('service') || 'General';
+            const pSymptom = formData.get('symptom') || 'Regular Checkup';
+
+            // --- Spam Protection (Local) ---
+            const lastBookingTime = localStorage.getItem('last_booking_' + pPhone);
+            const now = Date.now();
+            const oneDay = 24 * 60 * 60 * 1000;
+
+            if (lastBookingTime && (now - lastBookingTime < oneDay)) {
+                formStatus.textContent = "⚠️ An appointment was already requested for this number recently. Please wait for the clinic to contact you.";
                 formStatus.classList.add('error');
-            } finally {
                 btnSubmit.innerHTML = originalText;
                 btnSubmit.disabled = false;
+                return;
             }
+
+            // Visual Feedback
+            formStatus.textContent = "✅ Success! Taking you to WhatsApp to confirm your appointment...";
+            formStatus.classList.add('success');
+            
+            // Store booking time
+            localStorage.setItem('last_booking_' + pPhone, now);
+
+            // Construct WhatsApp message
+            const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📞 *Phone*: ${pPhone}\n📅 *Date/Time*: ${pDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
+            const waUrl = `https://wa.me/919886358222?text=${waMsg}`;
+            
+            form.reset();
+            
+            // Redirect after short delay
+            setTimeout(() => {
+                window.open(waUrl, '_blank');
+                btnSubmit.innerHTML = originalText;
+                btnSubmit.disabled = false;
+                closeApptModal();
+                formStatus.textContent = "";
+                formStatus.className = "form-status";
+            }, 2000);
         });
     }
 
