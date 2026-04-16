@@ -261,14 +261,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Visual Feedback
-            formStatus.textContent = "✅ Success! Taking you to WhatsApp to confirm your appointment...";
-            formStatus.classList.add('success');
-            
-            // Store booking time
-            localStorage.setItem('last_booking_' + pPhone, now);
+            // Function to format the technical date into a friendly AM/PM string
+            const formatDate = (dtStr) => {
+                if(!dtStr) return "Not specified";
+                const date = new Date(dtStr);
+                return date.toLocaleString('en-IN', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric', 
+                    hour: 'numeric', 
+                    minute: '2-digit', 
+                    hour12: true 
+                });
+            };
 
-            // Construct WhatsApp message
-            const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📞 *Phone*: ${pPhone}\n📅 *Date/Time*: ${pDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
+            const pFriendlyDate = formatDate(pDate);
+
+            // Construct WhatsApp message with AM/PM time
+            const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📞 *Phone*: ${pPhone}\n📅 *Date/Time*: ${pFriendlyDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
             const waUrl = `https://wa.me/919886358222?text=${waMsg}`;
             
             form.reset();
