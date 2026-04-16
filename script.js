@@ -193,4 +193,83 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = `images/${n}.jpeg`;
     });
 
+    /* ══════════════════════════════════════
+       APPOINTMENT MODAL & API SUBMISSION
+       ══════════════════════════════════════ */
+    const modal = document.getElementById('appointmentModal');
+    const btnBook1 = document.getElementById('btn-book-modal');
+    const btnBook2 = document.getElementById('btn-cta-modal');
+    const btnClose = document.getElementById('modalClose');
+    const form = document.getElementById('appointmentForm');
+    const formStatus = document.getElementById('formStatus');
+
+    function openApptModal() {
+        if (!modal) return;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeApptModal() {
+        if (!modal) return;
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if(formStatus) formStatus.className = 'form-status'; // reset
+    }
+
+    if (btnBook1) btnBook1.addEventListener('click', openApptModal);
+    if (btnBook2) btnBook2.addEventListener('click', openApptModal);
+    if (btnClose) btnClose.addEventListener('click', closeApptModal);
+    
+    // Close on outside click
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeApptModal();
+        });
+    }
+
+    // Handle Form Submit (AJAX)
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btnSubmit = document.getElementById('btnSubmitForm');
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = 'Booking...';
+            btnSubmit.disabled = true;
+            
+            formStatus.className = 'form-status'; // reset
+            formStatus.textContent = '';
+            
+            const formData = new FormData(form);
+            
+            try {
+                // Pointing to the local FastAPI backend (default port 8000)
+                const response = await fetch('http://localhost:8000/api/book', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    formStatus.textContent = "✅ Appointment booked successfully!";
+                    formStatus.classList.add('success');
+                    form.reset();
+                    // Close after 2.5s on success
+                    setTimeout(closeApptModal, 2500);
+                } else {
+                    formStatus.textContent = "❌ Error: " + (result.message || 'Failed to book');
+                    formStatus.classList.add('error');
+                }
+            } catch (error) {
+                console.error("Booking Error:", error);
+                formStatus.textContent = "❌ Cannot connect to server. Is the FastAPI backend running?";
+                formStatus.classList.add('error');
+            } finally {
+                btnSubmit.innerHTML = originalText;
+                btnSubmit.disabled = false;
+            }
+        });
+    }
+
 });

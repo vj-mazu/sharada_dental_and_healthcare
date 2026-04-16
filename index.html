@@ -66,7 +66,7 @@
                 <h1 class="hero-h1 anim">Your Smile Deserves the <em>Best Care</em></h1>
                 <p class="hero-p anim">From routine check-ups to complete smile makeovers — experience modern dentistry with a gentle, caring touch at Sharada Health &amp; Dental Care.</p>
                 <div class="hero-btns anim">
-                    <a href="tel:+919886891212" class="btn btn-fill"><i class="fas fa-phone-alt"></i> Call: +91 98868 91212</a>
+                    <button id="btn-book-modal" class="btn btn-fill"><i class="fas fa-calendar-check"></i> Book Online</button>
                     <a href="https://wa.me/919886891212?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment%20at%20Sharada%20Health%20%26%20Dental%20Care." target="_blank" class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                 </div>
                 <div class="hero-stats anim">
@@ -260,7 +260,7 @@
                 <p>Book your appointment now. Take the first step towards perfect oral health.</p>
             </div>
             <div class="cta-right">
-                <a href="tel:+919886891212" class="btn btn-white"><i class="fas fa-phone-alt"></i> Call: +91 98868 91212</a>
+                <button id="btn-cta-modal" class="btn btn-white"><i class="fas fa-calendar-check"></i> Book Online</button>
                 <a href="https://wa.me/919886891212?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment%20at%20Sharada%20Health%20%26%20Dental%20Care." target="_blank" class="btn btn-wa-alt"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             </div>
         </div>
@@ -298,6 +298,37 @@
         </div>
         <div class="container ft-bottom"><p>&copy; 2026 Sharada Health &amp; Dental Care. All rights reserved.</p></div>
     </footer>
+
+    <!-- ═══ APPOINTMENT MODAL ═══ -->
+    <div id="appointmentModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <h3>Book an Appointment</h3>
+                <p>Fill out the form below and we'll confirm shortly.</p>
+            </div>
+            <form id="appointmentForm" class="modal-form">
+                <div class="form-group">
+                    <label for="p_name">Full Name</label>
+                    <input type="text" id="p_name" name="patient_name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="p_phone">Phone Number</label>
+                    <input type="tel" id="p_phone" name="phone_number" placeholder="+91 9876543210" required>
+                </div>
+                <div class="form-group">
+                    <label for="p_date">Preferred Date & Time</label>
+                    <input type="text" id="p_date" name="preferred_date" placeholder="e.g. Tomorrow at 10 AM" required>
+                </div>
+                <div class="form-group">
+                    <label for="p_symptom">Any symptoms or notes?</label>
+                    <textarea id="p_symptom" name="symptom" rows="3" placeholder="Toothache, routine checkup, etc."></textarea>
+                </div>
+                <button type="submit" class="btn btn-fill w-full" id="btnSubmitForm">Confirm Booking</button>
+                <p id="formStatus" class="form-status"></p>
+            </form>
+        </div>
+    </div>
 
     <!-- FLOATING -->
     <div class="float-btns">
