@@ -321,6 +321,7 @@ a{text-decoration:none;color:inherit}
   .hero-video-wrap{max-width:100%;margin:0 auto 10px;border:none;box-shadow:0 12px 40px rgba(26,115,232,.15)}
   .showcase-badge{padding:10px 14px;flex-direction:column;text-align:center;gap:4px;bottom:-20px}
   .sbadge-logo{width:28px;height:28px}
+  .doctor-card{grid-template-columns:1fr;padding:24px;gap:28px}
   .doc-img-wrap{max-width:100%;margin:0 auto}
   .doc-name{font-size:1.6rem}
   .doc-highlights{grid-template-columns:1fr}
