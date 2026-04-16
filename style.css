@@ -382,9 +382,9 @@ a{text-decoration:none;color:inherit}
 /* ═══════════════════════════════════════
    APPOINTMENT MODAL
    ═══════════════════════════════════════ */
-.modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,22,40,.8);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .4s var(--ease)}
+.modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,22,40,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .4s var(--ease);padding:20px}
 .modal-overlay.active{display:flex;opacity:1}
-.modal-box{background:var(--white);width:90%;max-width:500px;border-radius:24px;padding:36px;position:relative;transform:scale(0.95) translateY(20px);opacity:0;transition:all .5s var(--ease3d);box-shadow:0 24px 60px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.2)}
+.modal-box{background:var(--white);width:100%;max-width:500px;max-height:90vh;border-radius:24px;padding:36px;position:relative;transform:scale(0.95) translateY(20px);opacity:0;transition:all .5s var(--ease3d);box-shadow:0 24px 60px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.2);overflow-y:auto}
 .modal-overlay.active .modal-box{transform:scale(1) translateY(0);opacity:1}
 .modal-close{position:absolute;top:20px;right:20px;background:var(--g50);border:none;width:36px;height:36px;border-radius:50%;font-size:1.4rem;color:var(--g600);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
 .modal-close:hover{background:var(--red);color:#fff;transform:rotate(90deg)}
@@ -447,11 +447,23 @@ a{text-decoration:none;color:inherit}
 
 @media(max-width:600px){
   .nav-contact-col{display:none} /* Hide dual buttons in nav on mobile, use hamburger */
+  .modal-box{padding:28px 20px}
   .sm-top{flex-direction:column;text-align:center;padding:32px 20px;gap:16px}
-  .sm-head h2{font-size:1.7rem}
-  .sm-content{padding:24px 20px}
-  .sm-footer{flex-direction:column;padding:20px}
-  .sm-item{padding:12px}
+  .sm-head h2{font-size:1.6rem}
+  .sm-content{padding:24px 16px}
+  .sm-footer{flex-direction:column;padding:16px;gap:12px}
+  .sm-item{padding:10px;gap:10px}
+  .sm-item i{font-size:.95rem}
+  .sm-item span{font-size:.85rem}
+  .cc-btns{flex-direction:column}
+}
+
+@media(max-height:600px){
+  .modal-box{max-height:85vh;padding:20px}
+  .modal-header{margin-bottom:14px}
+  .modal-header h3{font-size:1.4rem}
+  .sm-top{padding:20px}
+  .sm-icon{width:50px;height:50px;font-size:1.4rem}
 }
 
 
