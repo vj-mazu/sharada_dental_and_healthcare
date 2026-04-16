@@ -252,11 +252,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
                 
                 if (response.ok) {
-                    formStatus.textContent = "✅ Appointment booked successfully!";
+                    formStatus.textContent = "✅ Appointment booked! Redirecting to WhatsApp for confirmation...";
                     formStatus.classList.add('success');
+                    
+                    // Construct WhatsApp message
+                    const pName = formData.get('patient_name');
+                    const pDate = formData.get('preferred_date');
+                    const pService = formData.get('service') || 'General';
+                    const pSymptom = formData.get('symptom') || 'Regular Checkup';
+                    
+                    const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📅 *Date/Time*: ${pDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
+                    const waUrl = `https://wa.me/919886891212?text=${waMsg}`;
+                    
                     form.reset();
-                    // Close after 2.5s on success
-                    setTimeout(closeApptModal, 2500);
+                    
+                    // Open WhatsApp after 1.5s delay for feedback
+                    setTimeout(() => {
+                        window.open(waUrl, '_blank');
+                        closeApptModal();
+                    }, 1500);
                 } else {
                     formStatus.textContent = "❌ Error: " + (result.message || 'Failed to book');
                     formStatus.classList.add('error');
@@ -270,6 +284,199 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnSubmit.disabled = false;
             }
         });
+    }
+
+    /* ══════════════════════════════════════
+       SERVICE MODAL & DATA
+       ══════════════════════════════════════ */
+    const SERVICE_DATA = {
+        'service-scaling': {
+            title: 'Scaling & Cleaning',
+            icon: 'fa-teeth',
+            desc: 'Professional dental scaling and cleaning are essential for maintaining secondary gum health and a bright smile. Our procedure removes built-up tartar (calculus) and plaque that regular brushing cannot reach.',
+            details: [
+                'Prevents periodontal (gum) disease and bone loss.',
+                'Removes external stains caused by coffee, tea, or tobacco.',
+                'Includes a professional polish for a smooth, shiny finish.',
+                'Recommended every 6 months for optimal oral hygiene.'
+            ]
+        },
+        'service-rootcanal': {
+            title: 'Root Canal Therapy',
+            icon: 'fa-tooth',
+            desc: 'A Root Canal Treatment (RCT) is a highly successful procedure designed to save a severely damaged or infected tooth. We use advanced rotary endodontics to ensure the process is quick and virtually painless.',
+            details: [
+                'Eliminates persistent toothache and sensitivity.',
+                'Removes infected pulp and seals the canal to prevent re-infection.',
+                'Preserves your natural tooth, avoiding the need for extraction.',
+                'Completed with a custom crown for long-term strength.'
+            ]
+        },
+        'service-implants': {
+            title: 'Dental Implants',
+            icon: 'fa-plus-circle',
+            desc: 'Dental implants are the gold standard for replacing missing teeth. They provide a permanent, stable, and natural-looking solution that functions exactly like your real teeth.',
+            details: [
+                'Permanent titanium post serves as a root replacement.',
+                'Prevents jawbone shrinkage and maintains facial structure.',
+                'Allows you to eat, speak, and smile with 100% confidence.',
+                'Biocompatible materials for lifetime durability.'
+            ]
+        },
+        'service-orthodontics': {
+            title: 'Orthodontics & Aligners',
+            icon: 'fa-align-center',
+            desc: 'Transform your smile and improve your oral health with our comprehensive orthodontic solutions. We offer traditional braces and modern clear aligners for all age groups.',
+            details: [
+                'Corrects crowding, spacing, and bite alignment issues.',
+                'Options include Metal, Ceramic, and Invisible Aligners.',
+                'Improves long-term dental health and jaw function.',
+                'Customized treatment plans for a perfect, straight smile.'
+            ]
+        },
+        'service-whitening': {
+            title: 'Professional Teeth Whitening',
+            icon: 'fa-magic',
+            desc: 'Achieve a dazzling, professional-grade white smile. Our in-office whitening treatments are safer and much more effective than over-the-counter DIY kits.',
+            details: [
+                'Brightens your smile several shades in just one visit.',
+                'Removes deep-seated stains and yellowing.',
+                'Uses advanced light-activated technology.',
+                'Minimal sensitivity with professional application.'
+            ]
+        },
+        'service-extraction': {
+            title: 'Painless Tooth Extraction',
+            icon: 'fa-hand-holding-medical',
+            desc: 'While we always aim to save teeth, sometimes an extraction is necessary for your overall health. We ensure the procedure is performed with maximum comfort and a gentle touch.',
+            details: [
+                'Specialized wisdom tooth removal (impaction).',
+                'Advanced local anesthesia for a painless experience.',
+                'Quick procedure with detailed aftercare instructions.',
+                'Focus on preserving surrounding bone for future implants.'
+            ]
+        },
+        'service-crowns': {
+            title: 'Crowns & Bridges',
+            icon: 'fa-crown',
+            desc: 'Protect weakened teeth and restore your smile with high-quality crowns and bridges. These custom restorations are designed to match the color and shape of your natural teeth.',
+            details: [
+                'Crowns (caps) strengthen cracked or heavily filled teeth.',
+                'Bridges fill gaps left by missing teeth using adjacent support.',
+                'Made from durable, aesthetically pleasing ceramic materials.',
+                'Restores full chewing function and aesthetic beauty.'
+            ]
+        },
+        'service-dentures': {
+            title: 'Custom Dentures',
+            icon: 'fa-teeth-open',
+            desc: 'Regain your smile and chewing ability with our custom-fit dentures. We provide both complete and partial dentures designed for maximum comfort and a natural look.',
+            details: [
+                'Precision-crafted for a secure and comfortable fit.',
+                'Lightweight materials for effortless daily wear.',
+                'Easy to maintain and provides excellent facial support.',
+                'Options for implant-supported dentures for extra stability.'
+            ]
+        },
+        'service-filling': {
+            title: 'Cosmetic Fillings',
+            icon: 'fa-fill-drip',
+            desc: 'Say goodbye to old metallic fillings. Our modern composite fillings are tooth-colored and designed to blend seamlessly with your natural enamel.',
+            details: [
+                'Effectively repairs cavities and minor chips.',
+                'Bond directly to the tooth, requiring less drilling.',
+                'Chemically hardens in seconds under specialized light.',
+                '100% Mercury-free and aesthetically superior.'
+            ]
+        },
+        'service-pediatric': {
+            title: 'Pediatric Dentistry',
+            icon: 'fa-child',
+            desc: 'We love kids! Our pediatric dental care focuses on creating a positive, fun experience to build a lifetime of healthy dental habits for your children.',
+            details: [
+                'Gentle exams and preventative fluoride treatments.',
+                'Dental sealants to prevent cavities in young molars.',
+                'Age-appropriate education on brushing and hygiene.',
+                'Compassionate approach specifically for nervous children.'
+            ]
+        },
+        'service-gum': {
+            title: 'Gum Treatment',
+            icon: 'fa-heartbeat',
+            desc: 'Healthy gums are the foundation of a healthy mouth. We offer advanced periodontal treatments to manage and reverse gum disease at any stage.',
+            details: [
+                'Deep cleaning (Scaling & Root Planing) for infected gums.',
+                'Treatment for bleeding gums and bad breath.',
+                'Microbial irrigation to eliminate harmful bacteria.',
+                'Long-term maintenance plans for gum health.'
+            ]
+        },
+        'service-smile': {
+            title: 'Smile Makeover',
+            icon: 'fa-smile-beam',
+            desc: 'Our Smile Makeover is a personalized combination of cosmetic procedures to give you the perfect smile you’ve always wanted. It’s a total transformation.',
+            details: [
+                'Combines Veneers, Crowns, and Whitening.',
+                'Full digital smile design for predictable results.',
+                'Corrects tooth shape, size, color, and alignment.',
+                'A comprehensive approach to facial aesthetics.'
+            ]
+        }
+    };
+
+    const sModal = document.getElementById('serviceModal');
+    const sBody = document.getElementById('srvModalBody');
+
+    function openSrvModal(id) {
+        const data = SERVICE_DATA[id];
+        if (!data) return;
+
+        sBody.innerHTML = `
+            <div class="sm-top">
+                <div class="sm-icon"><i class="fas ${data.icon}"></i></div>
+                <div class="sm-head">
+                    <h2>${data.title}</h2>
+                    <p>Expert Specialized Care</p>
+                </div>
+            </div>
+            <div class="sm-content">
+                <p class="sm-desc">${data.desc}</p>
+                <div class="sm-detail-list">
+                    ${data.details.map(d => `<div class="sm-item"><i class="fas fa-check-circle"></i> <span>${d}</span></div>`).join('')}
+                </div>
+            </div>
+            <div class="sm-footer">
+                <button class="btn btn-fill srv-book-btn"><i class="fas fa-calendar-alt"></i> Book This Service</button>
+                <button class="btn btn-white srv-close-btn">Close Details</button>
+            </div>
+        `;
+
+        sModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Bind inner buttons
+        sBody.querySelector('.srv-close-btn').onclick = closeSrvModal;
+        sBody.querySelector('.srv-book-btn').onclick = () => {
+            const selectEl = document.getElementById('p_service');
+            if(selectEl) selectEl.value = data.title;
+            closeSrvModal();
+            setTimeout(openApptModal, 400);
+        };
+    }
+
+    function closeSrvModal() {
+        sModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.srv').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => openSrvModal(card.id));
+    });
+
+    if (sModal) {
+        sModal.addEventListener('click', e => { if (e.target === sModal) closeSrvModal(); });
+        document.getElementById('srvModalClose').onclick = closeSrvModal;
     }
 
 });
