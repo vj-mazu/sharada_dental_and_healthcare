@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Depends, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Appointment
 from datetime import datetime
@@ -160,3 +161,6 @@ async def admin_dashboard(db: Session = Depends(get_db)):
     </html>
     """
     return HTMLResponse(content=html_content)
+
+# Mount the frontend files (index.html, style.css, script.js are in the parent directory)
+app.mount("/", StaticFiles(directory="../", html=True), name="frontend")

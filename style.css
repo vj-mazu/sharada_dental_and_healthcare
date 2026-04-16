@@ -416,7 +416,7 @@ a{text-decoration:none;color:inherit}
 }
 
 /* Service Modal Specifics */
-.srv-modal-box{max-width:600px;padding:0;overflow:hidden}
+.srv-modal-box{max-width:600px;padding:0;overflow:visible}
 .srv-modal-box #srvModalBody{display:flex;flex-direction:column}
 
 .sm-top{background:linear-gradient(135deg,var(--blue),var(--green));padding:40px 30px;color:#fff;display:flex;align-items:center;gap:24px}

@@ -243,8 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(form);
             
             try {
-                // Pointing to the local FastAPI backend (default port 8000)
-                const response = await fetch('http://localhost:8000/api/book', {
+                // Pointing to the relative path so it works across localhost, mobile, and different IPs
+                const response = await fetch('/api/book', {
                     method: 'POST',
                     body: formData
                 });
