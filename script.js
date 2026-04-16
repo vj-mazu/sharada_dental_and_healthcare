@@ -127,44 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ══════════════════════════════════════
-       HERO 3D SHOWCASE — Parallax on mouse
-       ══════════════════════════════════════ */
-    const showcase = document.getElementById('heroShowcase');
-    if (showcase) {
-        const heroSection = document.querySelector('.hero');
-        heroSection.addEventListener('mousemove', (e) => {
-            const rect = heroSection.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-            const mainCard = showcase.querySelector('.showcase-main');
-            const float1 = showcase.querySelector('.showcase-float-1');
-            const float2 = showcase.querySelector('.showcase-float-2');
-
-            if (mainCard) mainCard.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 5}deg)`;
-            if (float1) float1.style.transform = `rotateY(${8 + x * 12}deg) rotateX(${-3 - y * 6}deg) translateZ(30px) translateX(${x * 15}px) translateY(${y * 10}px)`;
-            if (float2) float2.style.transform = `rotateY(${-6 + x * 10}deg) rotateX(${4 - y * 5}deg) translateZ(20px) translateX(${x * -12}px) translateY(${y * 8}px)`;
-        });
-
-        heroSection.addEventListener('mouseleave', () => {
-            const mainCard = showcase.querySelector('.showcase-main');
-            const float1 = showcase.querySelector('.showcase-float-1');
-            const float2 = showcase.querySelector('.showcase-float-2');
-            if (mainCard) mainCard.style.transform = 'rotateY(-3deg) rotateX(2deg)';
-            if (float1) float1.style.transform = 'rotateY(8deg) rotateX(-3deg) translateZ(30px)';
-            if (float2) float2.style.transform = 'rotateY(-6deg) rotateX(4deg) translateZ(20px)';
-        });
-    }
-
-    /* ══════════════════════════════════════
        PARALLAX SCROLL EFFECT
        ══════════════════════════════════════ */
     window.addEventListener('scroll', () => {
         const y = scrollY;
-        // Subtle parallax on hero image showcase
-        if (showcase && y < window.innerHeight) {
-            showcase.style.transform = `translateY(${y * 0.08}px)`;
-        }
         // Badge circle subtle float
         const badge = document.querySelector('.about-badge-circle');
         if (badge) {
