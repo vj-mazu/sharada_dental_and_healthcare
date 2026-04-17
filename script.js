@@ -277,9 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const pFriendlyDate = formatDate(pDate);
 
+            // Route to correct number based on service
+            const isDental = !pService.includes('Health') && !pService.includes('Fever') && !pService.includes('Typhoid') && !pService.includes('Cough');
+            const targetNum = isDental ? '919886891212' : '919886358222';
+
             // Construct WhatsApp message with AM/PM time
-            const waMsg = encodeURIComponent(`Hello Sharada Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📞 *Phone*: ${pPhone}\n📅 *Date/Time*: ${pFriendlyDate}\n🦷 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
-            const waUrl = `https://wa.me/919886358222?text=${waMsg}`;
+            const waMsg = encodeURIComponent(`Hello Sharada Health Clinic & Dental Care! 👋\n\nI just booked an appointment online:\n👤 *Name*: ${pName}\n📞 *Phone*: ${pPhone}\n📅 *Date/Time*: ${pFriendlyDate}\n🏥 *Service*: ${pService}\n📝 *Notes*: ${pSymptom}\n\nPlease confirm my booking. Thank you!`);
+            const waUrl = `https://wa.me/${targetNum}?text=${waMsg}`;
             
             form.reset();
             
@@ -299,6 +303,94 @@ document.addEventListener('DOMContentLoaded', () => {
        SERVICE MODAL & DATA
        ══════════════════════════════════════ */
     const SERVICE_DATA = {
+        'service-fever': {
+            title: 'Fever & Flu Treatment',
+            icon: 'fa-thermometer-three-quarters',
+            desc: 'Get expert treatment for viral fevers, common colds, and seasonal flu. Dr. Nagraj provides comprehensive care to ensure a quick and safe recovery.',
+            details: [
+                'Complete symptomatic assessment and diagnosis.',
+                'Personalized medication plans for rapid relief.',
+                'Monitoring for complications and dehydration.',
+                'Guidance on diet and preventive care post-recovery.'
+            ]
+        },
+        'service-typhoid': {
+            title: 'Typhoid & Malaria Management',
+            icon: 'fa-virus',
+            desc: 'Specialized diagnosis and treatment for tropical infections like Typhoid and Malaria. We focus on early detection and precise medication to prevent complications.',
+            details: [
+                'Lab-verified diagnosis and treatment protocols.',
+                'Supportive care and hydration management.',
+                'Regular monitoring of vital health markers.',
+                'Prevention strategies to avoid recurrence.'
+            ]
+        },
+        'service-jaundice': {
+            title: 'Jaundice & Liver Care',
+            icon: 'fa-hand-holding-water',
+            desc: 'Comprehensive evaluation and treatment for Jaundice, Hepatitis, and related liver disorders. We ensure safe recovery through evidence-based medical oversight.',
+            details: [
+                'Liver function test analysis and monitoring.',
+                'Dietary planning and herbal-supportive guidance.',
+                'Bilirubin level tracking for effective recovery.',
+                'Viral screening and liver health education.'
+            ]
+        },
+        'service-gastritis': {
+            title: 'Gastric & Digestive Care',
+            icon: 'fa-pills',
+            desc: 'Expert care for acidity, stomach pain, peptic ulcers, and chronic digestive disorders. Relief from abdominal discomfort with precision medicine.',
+            details: [
+                'Diagnosis of H. pylori and acid reflux issues.',
+                'Personalized diet and lifestyle modification plans.',
+                'Effective medication for ulcer and heartburn relief.',
+                'Long-term digestive health monitoring.'
+            ]
+        },
+        'service-diabetes': {
+            title: 'Diabetes & Sugar Management',
+            icon: 'fa-syringe',
+            desc: 'Professional management of Type 1 and Type 2 Diabetes to maintain healthy blood sugar levels and prevent long-term complications.',
+            details: [
+                'Blood sugar monitoring and HbA1c tracking.',
+                'Diabetes-specific dietary and exercise counseling.',
+                'Medication management and insulin titration.',
+                'Prevention of diabetic foot and organ complications.'
+            ]
+        },
+        'service-allergy': {
+            title: 'Skin & Allergy Care',
+            icon: 'fa-allergies',
+            desc: 'Specialized treatment for skin rashes, seasonal allergies, dermatitis, and common inflammatory skin conditions.',
+            details: [
+                'Allergen identification and avoidance advice.',
+                'Effective topical and systemic anti-allergic care.',
+                'Treatment for itching, redness, and inflammation.',
+                'Skin health monitoring and preventive strategies.'
+            ]
+        },
+        'service-respiratory': {
+            title: 'Cough & Respiratory Care',
+            icon: 'fa-lungs',
+            desc: 'Relief from acute and chronic respiratory issues, including persistent cough, bronchitis, and breathlessness.',
+            details: [
+                'Chest assessment and breathing monitoring.',
+                'Nebulization services if required.',
+                'Effective treatment for allergic and viral cough.',
+                'Lifestyle advice for long-term lung health.'
+            ]
+        },
+        'service-consultation': {
+            title: 'General OPD Consultation',
+            icon: 'fa-stethoscope',
+            desc: 'A comprehensive health checkup for all your primary medical needs. From blood pressure monitoring to chronic disease management.',
+            details: [
+                'Detailed physical examination and health audit.',
+                'Management of lifestyle diseases (BP, Sugar, etc.).',
+                'Referrals to specialists if necessary.',
+                'Routine vaccinations and health screening.'
+            ]
+        },
         'service-scaling': {
             title: 'Scaling & Cleaning',
             icon: 'fa-teeth',
